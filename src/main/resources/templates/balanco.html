@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Balanço Patrimonial - Micro ERP</title>
+  <meta charset="UTF-8">
+
+  <style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        background: #f1f3f6;
+    }
+
+    header {
+        background: #202529;
+        color: white;
+        padding: 22px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    header a {
+        background: white;
+        color: black;
+        padding: 12px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+    }
+
+    .container {
+        width: 80%;
+        margin: 40px auto;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 16px;
+        border-bottom: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    .titulo {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .total {
+        font-weight: bold;
+        color: #0d6efd;
+    }
+
+    .positivo {
+        color: #198754;
+        font-weight: bold;
+    }
+
+    .negativo {
+        color: #dc3545;
+        font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Micro ERP - Balanço Patrimonial</h1>
+  <a href="/home">Voltar</a>
+</header>
+
+<div class="container">
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="titulo">ATIVO</div>
+
+      <table>
+        <tr>
+          <td>Caixa</td>
+          <td class="positivo">
+            R$ <span th:text="${#numbers.formatDecimal(caixa,1,2)}"></span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Estoque</td>
+          <td class="positivo">
+            R$ <span th:text="${#numbers.formatDecimal(estoque,1,2)}"></span>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Contas a Receber</td>
+          <td class="positivo">
+            R$ <span th:text="${#numbers.formatDecimal(contasReceber,1,2)}"></span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="total">Total do Ativo</td>
+          <td class="total">
+            R$ <span th:text="${#numbers.formatDecimal(totalAtivo,1,2)}"></span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="titulo">PASSIVO</div>
+
+      <table>
+        <tr>
+          <td>Contas a Pagar</td>
+          <td class="negativo">
+            R$ <span th:text="${#numbers.formatDecimal(contasPagar,1,2)}"></span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="total">Total do Passivo</td>
+          <td class="total">
+            R$ <span th:text="${#numbers.formatDecimal(totalPassivo,1,2)}"></span>
+          </td>
+        </tr>
+      </table>
+
+      <br>
+
+      <div class="titulo">PATRIMÔNIO LÍQUIDO</div>
+
+      <table>
+        <tr>
+          <td>Resultado Acumulado</td>
+          <td class="total">
+            R$ <span th:text="${#numbers.formatDecimal(patrimonioLiquido,1,2)}"></span>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

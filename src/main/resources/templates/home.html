@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home - Micro ERP</title>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+        }
+
+        header {
+            background: #202529;
+            color: white;
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: normal;
+        }
+
+        header span {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .logout {
+            background: white;
+            color: black;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .container {
+            width: 85%;
+            margin: 35px auto;
+        }
+
+        .perfil-box, .footer-card {
+            background: white;
+            padding: 18px 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            font-size: 18px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            margin-bottom: 35px;
+        }
+
+        .card-info {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        .card-info h2 {
+            margin: 0;
+            font-size: 34px;
+            color: #198754;
+        }
+
+        .card-info p {
+            margin: 8px 0 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .menu {
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .menu h2 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 30px;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .menu-card {
+            background: #f8f9fa;
+            padding: 28px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #202529;
+            border: 1px solid #ddd;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+            background: #ffffff;
+        }
+
+        .menu-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .menu-card p {
+            color: #666;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>Micro ERP</h1>
+        <span>Sistema acadêmico de gestão integrada</span>
+    </div>
+
+    <a href="/logout" class="logout">Sair</a>
+</header>
+
+<div class="container">
+
+    <div class="perfil-box">
+        Usuário:
+        <strong th:text="${session.usuarioLogado}"></strong>
+        |
+        Perfil:
+        <strong th:text="${session.perfil}"></strong>
+    </div>
+
+    <div class="footer-card">
+        <strong>Alertas do Sistema</strong>
+
+        <ul style="margin-top:15px; line-height: 2;">
+            <li th:if="${qtdEstoqueBaixo > 0}">
+                ⚠ Existem produtos com estoque baixo.
+            </li>
+
+            <li th:if="${qtdComprasPendentes > 0}">
+                📦 Existem compras pendentes de recebimento.
+            </li>
+
+            <li th:if="${qtdContasPendentes > 0}">
+                💰 Existem contas pendentes.
+            </li>
+
+            <li th:if="${qtdContasVencidas > 0}">
+                🚨 Existem contas vencidas.
+            </li>
+
+            <li th:if="${qtdEstoqueBaixo == 0
+                         and qtdComprasPendentes == 0
+                         and qtdContasPendentes == 0
+                         and qtdContasVencidas == 0}">
+                ✅ Nenhum alerta no sistema.
+            </li>
+        </ul>
+    </div>
+
+    <div class="dashboard">
+
+        <div class="card-info">
+            <h2 th:text="${qtdEstoqueBaixo}"></h2>
+            <p>⚠ Estoque Baixo</p>
+        </div>
+
+        <div class="card-info">
+            <h2 th:text="${qtdComprasPendentes}"></h2>
+            <p>📦 Compras Pendentes</p>
+        </div>
+
+        <div class="card-info">
+            <h2 th:text="${qtdContasPendentes}"></h2>
+            <p>💰 Contas Pendentes</p>
+        </div>
+
+        <div class="card-info">
+            <h2 th:text="${qtdContasVencidas}"></h2>
+            <p>🚨 Contas Vencidas</p>
+        </div>
+
+    </div>
+
+    <div class="menu">
+        <h2>Menu Principal</h2>
+
+        <div class="grid-menu">
+
+            <a href="/clientes"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'VENDAS'}">
+                <h3>Clientes</h3>
+                <p>Cadastro e consulta de clientes.</p>
+            </a>
+
+            <a href="/vendas"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'VENDAS'}">
+                <h3>Vendas</h3>
+                <p>Saída de produtos e baixa automática do estoque.</p>
+            </a>
+
+            <a href="/produtos"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'ESTOQUE'}">
+                <h3>Produtos</h3>
+                <p>SKU, preços, estoque e custo médio.</p>
+            </a>
+
+            <a href="/estoque"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'ESTOQUE'}">
+                <h3>Estoque</h3>
+                <p>Consulta de produtos, saldo atual e estoque mínimo.</p>
+            </a>
+
+            <a href="/compras"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'COMPRAS'}">
+                <h3>Compras</h3>
+                <p>Entrada de mercadorias e atualização do estoque.</p>
+            </a>
+
+            <a href="/fornecedores"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'COMPRAS'}">
+                <h3>Fornecedores</h3>
+                <p>Cadastro e consulta dos fornecedores.</p>
+            </a>
+
+            <a href="/perdas"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'ESTOQUE'}">
+                <h3>Perdas</h3>
+                <p>Quebras, validade e prejuízo financeiro.</p>
+            </a>
+
+            <a href="/relatorios"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Relatórios</h3>
+                <p>Estoque, faturamento mensal, anual e saldo.</p>
+            </a>
+
+            <a href="/plano-contas"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Plano de Contas</h3>
+                <p>Controle de contas débito e crédito.</p>
+            </a>
+
+            <a href="/financeiro"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Financeiro</h3>
+                <p>Lançamentos, créditos, débitos e saldo.</p>
+            </a>
+
+            <a href="/contas-financeiras"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Contas</h3>
+                <p>Contas a pagar, receber e baixa financeira.</p>
+            </a>
+
+            <a href="/dashboard"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Dashboard</h3>
+                <p>Gráficos de vendas, compras, perdas e saldo.</p>
+            </a>
+
+            <a href="/auditoria"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN'}">
+                <h3>Auditoria</h3>
+                <p>Histórico de ações dos usuários no sistema.</p>
+            </a>
+
+            <a href="/fluxo-caixa"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Fluxo de Caixa</h3>
+                <p>Entradas, saídas e saldo financeiro do sistema.</p>
+            </a>
+            <a href="/usuarios"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN'}">
+                <h3>Usuários</h3>
+                <p>Cadastro, edição e perfis de acesso.</p>
+            </a>
+            <a href="/dre"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+
+                <h3>DRE</h3>
+
+                <p>
+                    Demonstrativo de Resultado do Exercício.
+                </p>
+
+            </a>
+            <a href="/balanco"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+                <h3>Balanço Patrimonial</h3>
+                <p>Ativo, passivo e patrimônio líquido.</p>
+            </a>
+            <a href="/lucratividade"
+               class="menu-card"
+               th:if="${session.perfil == 'ADMIN' or session.perfil == 'FINANCEIRO'}">
+
+                <h3>Lucratividade</h3>
+
+                <p>
+                    Lucro e margem por produto.
+                </p>
+
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

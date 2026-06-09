@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Produtos - Micro ERP</title>
+    <meta charset="UTF-8">
+
+    <style>
+
+        body{
+            margin:0;
+            font-family: Arial, sans-serif;
+            background:#f1f3f6;
+        }
+
+        header{
+            background:#202529;
+            color:white;
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        header h1{
+            margin:0;
+        }
+
+        header a{
+            background:white;
+            color:black;
+            text-decoration:none;
+            padding:12px 18px;
+            border-radius:8px;
+        }
+
+        .card{
+            width:85%;
+            margin:30px auto;
+            background:white;
+            padding:30px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        h2{
+            margin-top:0;
+            margin-bottom:25px;
+        }
+
+        .btn{
+            display:inline-block;
+            background:#198754;
+            color:white;
+            padding:14px 18px;
+            border-radius:8px;
+            text-decoration:none;
+            margin-bottom:20px;
+        }
+
+        .btn:hover{
+            background:#157347;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th, td{
+            border:1px solid #ddd;
+            padding:14px;
+            text-align:left;
+        }
+
+        th{
+            background:#f8f9fa;
+        }
+
+        .ativo{
+            color:#198754;
+            font-weight:bold;
+        }
+
+        .inativo{
+            color:#dc3545;
+            font-weight:bold;
+        }
+
+        .acoes{
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+        }
+
+        .acoes a{
+            text-decoration:none;
+            padding:8px 12px;
+            border-radius:6px;
+            color:white;
+            font-size:14px;
+        }
+
+        .editar{
+            background:#0d6efd;
+        }
+
+        .excluir{
+            background:#dc3545;
+        }
+
+        .desabilitar{
+            background:#ffc107;
+            color:black !important;
+        }
+
+        .habilitar{
+            background:#198754;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <h1>Micro ERP - Produtos</h1>
+    <a href="/home" class="btn btn-light">Voltar</a>
+</header>
+
+<div class="card">
+
+    <h2>Lista de Produtos</h2>
+
+    <a class="btn" href="/produtos/novo">
+        + Novo Produto
+    </a>
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>SKU</th>
+            <th>Nome</th>
+            <th>Preço Venda</th>
+            <th>Estoque</th>
+            <th>Custo Médio</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="produto : ${produtos}">
+
+            <td th:text="${produto.id}"></td>
+
+            <td th:text="${produto.sku}"></td>
+
+            <td th:text="${produto.nome}"></td>
+
+            <td>
+                R$
+                <span th:text="${#numbers.formatDecimal(produto.preco_venda,1,2)}"></span>
+            </td>
+
+            <td th:text="${produto.estoque}"></td>
+
+            <td>
+                R$
+                <span th:text="${#numbers.formatDecimal(produto.custo_medio,1,2)}"></span>
+            </td>
+
+            <td>
+
+                <span th:if="${produto.ativo}" class="ativo">
+                    Ativo
+                </span>
+
+                <span th:unless="${produto.ativo}" class="inativo">
+                    Inativo
+                </span>
+
+            </td>
+
+            <td>
+
+                <div class="acoes">
+
+                    <a th:href="@{'/produtos/editar/' + ${produto.id}}"
+                       class="editar">
+                        Editar
+                    </a>
+
+                    <a th:href="@{'/produtos/excluir/' + ${produto.id}}"
+                       class="excluir">
+                        Excluir
+                    </a>
+
+                    <a th:if="${produto.ativo}"
+                       th:href="@{'/produtos/desabilitar/' + ${produto.id}}"
+                       class="desabilitar">
+                        Desabilitar
+                    </a>
+
+                    <a th:unless="${produto.ativo}"
+                       th:href="@{'/produtos/habilitar/' + ${produto.id}}"
+                       class="habilitar">
+                        Habilitar
+                    </a>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>DRE - Micro ERP</title>
+  <meta charset="UTF-8">
+
+  <style>
+
+    body{
+        margin:0;
+        font-family:Arial;
+        background:#f1f3f6;
+    }
+
+    header{
+        background:#202529;
+        color:white;
+        padding:22px 40px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    header a{
+        background:white;
+        color:black;
+        padding:12px 18px;
+        border-radius:8px;
+        text-decoration:none;
+    }
+
+    .container{
+        width:70%;
+        margin:40px auto;
+    }
+
+    .card{
+        background:white;
+        padding:40px;
+        border-radius:14px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    td{
+        padding:18px;
+        border-bottom:1px solid #ddd;
+        font-size:20px;
+    }
+
+    .positivo{
+        color:#198754;
+        font-weight:bold;
+    }
+
+    .negativo{
+        color:#dc3545;
+        font-weight:bold;
+    }
+
+    .lucro{
+        color:#0d6efd;
+        font-size:28px;
+        font-weight:bold;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+  <h1>Micro ERP - DRE</h1>
+
+  <a href="/home">
+    Voltar
+  </a>
+</header>
+
+<div class="container">
+
+  <div class="card">
+
+    <h2>Demonstrativo de Resultado do Exercício</h2>
+
+    <table>
+
+      <tr>
+        <td>Receita Bruta</td>
+
+        <td class="positivo">
+          R$
+          <span th:text="${#numbers.formatDecimal(receitaBruta,1,2)}"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>(-) Imposto Simples Nacional (10%)</td>
+
+        <td class="negativo">
+          R$
+          <span th:text="${#numbers.formatDecimal(impostoSimples,1,2)}"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>(-) Compras / Custos</td>
+
+        <td class="negativo">
+          R$
+          <span th:text="${#numbers.formatDecimal(compras,1,2)}"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>(-) Perdas de Estoque</td>
+
+        <td class="negativo">
+          R$
+          <span th:text="${#numbers.formatDecimal(perdas,1,2)}"></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Lucro Líquido</td>
+
+        <td class="lucro">
+          R$
+          <span th:text="${#numbers.formatDecimal(lucroLiquido,1,2)}"></span>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>
+
+</body>
+</html>

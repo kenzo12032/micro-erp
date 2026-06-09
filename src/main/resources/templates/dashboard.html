@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - Micro ERP</title>
+    <meta charset="UTF-8">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f3f6;
+        }
+
+        header {
+            background: #202529;
+            color: white;
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: normal;
+        }
+
+        header a {
+            background: white;
+            color: black;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 90%;
+            margin: 35px auto;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            margin: 0 0 12px;
+            color: #555;
+        }
+
+        .card strong {
+            font-size: 28px;
+        }
+
+        .green {
+            color: #198754;
+        }
+
+        .red {
+            color: #dc3545;
+        }
+
+        .blue {
+            color: #0d6efd;
+        }
+
+        .orange {
+            color: #f59e0b;
+        }
+
+        .purple {
+            color: #7c3aed;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .chart-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .filtros {
+            margin-bottom: 25px;
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .filtros a {
+            margin-right: 12px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Micro ERP - Dashboard</h1>
+    <a href="/home">Voltar</a>
+</header>
+
+<div class="container">
+
+    <div class="filtros">
+
+        <a href="/dashboard?periodo=HOJE">Hoje</a>
+        <a href="/dashboard?periodo=SEMANA">Semana</a>
+        <a href="/dashboard?periodo=MES">Mês</a>
+        <a href="/dashboard?periodo=ANO">Ano</a>
+
+        <p style="margin-top: 10px;">
+            Período atual:
+            <strong th:text="${periodo}"></strong>
+        </p>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total de Créditos</h3>
+            <strong class="green">
+                R$ <span th:text="${#numbers.formatDecimal(totalCreditos,1,2)}"></span>
+            </strong>
+        </div>
+
+        <div class="card">
+            <h3>Total de Débitos</h3>
+            <strong class="red">
+                R$ <span th:text="${#numbers.formatDecimal(totalDebitos,1,2)}"></span>
+            </strong>
+        </div>
+
+        <div class="card">
+            <h3>Saldo Geral</h3>
+            <strong class="blue">
+                R$ <span th:text="${#numbers.formatDecimal(saldo,1,2)}"></span>
+            </strong>
+        </div>
+
+        <div class="card">
+            <h3>Lucro Estimado</h3>
+            <strong class="purple">
+                R$ <span th:text="${#numbers.formatDecimal(lucroEstimado,1,2)}"></span>
+            </strong>
+        </div>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Vendas</h3>
+            <strong class="green">
+                R$ <span th:text="${#numbers.formatDecimal(totalVendas,1,2)}"></span>
+            </strong>
+        </div>
+
+        <div class="card">
+            <h3>Compras</h3>
+            <strong class="red">
+                R$ <span th:text="${#numbers.formatDecimal(totalCompras,1,2)}"></span>
+            </strong>
+        </div>
+
+        <div class="card">
+            <h3>Perdas</h3>
+            <strong class="red">
+                R$ <span th:text="${#numbers.formatDecimal(totalPerdas,1,2)}"></span>
+            </strong>
+        </div>
+
+        <div class="card">
+            <h3>Estoque Baixo</h3>
+            <strong class="orange" th:text="${qtdEstoqueBaixo}"></strong>
+        </div>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Produto Mais Vendido</h3>
+            <strong class="blue" th:text="${produtoMaisVendido}"></strong>
+        </div>
+
+        <div class="card">
+            <h3>Cliente que Mais Comprou</h3>
+            <strong class="green" th:text="${clienteMaisComprou}"></strong>
+        </div>
+
+        <div class="card">
+            <h3>Fornecedor com Mais Compras</h3>
+            <strong class="purple" th:text="${fornecedorMaisCompras}"></strong>
+        </div>
+
+        <div class="card">
+            <h3>Maior Prejuízo</h3>
+            <strong class="red" th:text="${maiorPrejuizoProduto}"></strong>
+        </div>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Contas Pendentes</h3>
+            <strong class="orange" th:text="${contasPendentes}"></strong>
+        </div>
+
+    </div>
+
+    <div class="charts">
+
+        <div class="chart-card">
+            <h2>Créditos x Débitos</h2>
+            <canvas id="graficoFinanceiro"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h2>Origem das Movimentações</h2>
+            <canvas id="graficoOrigem"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script th:inline="javascript">
+
+    const totalCreditos = [[${totalCreditos}]];
+    const totalDebitos = [[${totalDebitos}]];
+
+    const totalVendas = [[${totalVendas}]];
+    const totalCompras = [[${totalCompras}]];
+    const totalPerdas = [[${totalPerdas}]];
+
+    new Chart(document.getElementById('graficoFinanceiro'), {
+        type: 'bar',
+        data: {
+            labels: ['Créditos', 'Débitos'],
+            datasets: [{
+                label: 'Valores em R$',
+                data: [totalCreditos, totalDebitos],
+                backgroundColor: ['#198754', '#dc3545']
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('graficoOrigem'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Vendas', 'Compras', 'Perdas'],
+            datasets: [{
+                data: [totalVendas, totalCompras, totalPerdas],
+                backgroundColor: ['#198754', '#dc3545', '#f59e0b']
+            }]
+        }
+    });
+
+</script>
+
+</body>
+</html>
